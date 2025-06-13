@@ -1,50 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import type { RootState } from '../src/app/store';
-import { toggleTheme } from './features/theme/themeSlice';
+
+import ThemeToggle from './components/ThemeToggle';
+import LanguageToggle from './components/LanguageToggle';
+
 import { NewList } from './features/news/NewList';
-import i18n from './il8n/index';
 import Home from './pages/Home';
+
 import './App.css';
 
 const App: React.FC = () => {
-  const theme = useSelector((state: RootState) => state.theme);
-  const dispatch = useDispatch();
-
-  const changeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLang = e.target.value;
-    i18n.changeLanguage(selectedLang);
-    localStorage.setItem('preferredLanguage', selectedLang);
-  };
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-    i18n.changeLanguage(savedLang);
-  }, []);
-
   return (
     <Router>
       <div className="app-container">
         {/* Header */}
         <header className="header">
-          <label className="switch">
-            <input type="checkbox" onChange={() => dispatch(toggleTheme())} />
-            <span className="slider"></span>
-          </label>
-
-          <select
-            onChange={changeLanguage}
-            defaultValue={i18n.language}
-            className="language-select"
-          >
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-          </select>
+          <ThemeToggle />
+          <LanguageToggle />
         </header>
 
         {/* Navigation */}
